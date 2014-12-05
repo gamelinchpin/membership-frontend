@@ -69,7 +69,7 @@ trait Joiner extends Controller {
 
   def enterStaffDetails = EmailMatchingGuardianAuthenticatedStaffNonMemberAction.async { implicit request =>
     for {
-      (privateFields, marketingChoices, passwordExists) <- identityDetails(request.identityUser, request)
+      (privateFields, marketingChoices, passwordExists) <- identityDetails(request.user.idMinimal, request)
     } yield {
       Ok(views.html.joiner.form.addressWithWelcomePack(privateFields, marketingChoices, passwordExists))
     }
@@ -94,9 +94,9 @@ trait Joiner extends Controller {
   }
 
   def updateEmailStaff() = AuthenticatedStaffNonMemberAction.async { implicit request =>
-    val googleEmail = request.googleUser.email
+    val googleEmail = request.user.google.email
     for {
-      responseCode <- IdentityService.updateEmail(request.identityUser, googleEmail, IdentityRequest(request))
+      responseCode <- IdentityService.updateIdentityEmailToMatchGoogle(request.user, IdentityRequest(request))
     }
     yield {
       responseCode match {
