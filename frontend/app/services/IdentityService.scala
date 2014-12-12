@@ -96,7 +96,7 @@ case class IdentityService(identityApi: IdentityApi) {
 
 trait IdentityApi {
 
-  def getUserPasswordExists(headers:List[(String, String)], parameters: List[(String, String)]) : Future[Boolean] = {
+  def getUserPasswordExists(headers:List[(String, String)], parameters: List[(String, String)]): Future[Boolean] = {
     val endpoint = "user/password-exists"
     val url = s"${Config.idApiUrl}/$endpoint"
     Timing.record(IdentityApiMetrics, "get-user-password-exists") {
@@ -107,7 +107,7 @@ trait IdentityApi {
     }
   }
 
-  def get(endpoint: String, headers:List[(String, String)], parameters: List[(String, String)]) : Future[Option[IdUser]] = {
+  def get(endpoint: String, headers:List[(String, String)], parameters: List[(String, String)]): Future[Option[IdUser]] = {
     Timing.record(IdentityApiMetrics, "get-user") {
       WS.url(s"${Config.idApiUrl}/$endpoint").withHeaders(headers: _*).withQueryString(parameters: _*).withRequestTimeout(1000).get().map { response =>
         recordAndLogResponse(response.status, "GET user", endpoint)
