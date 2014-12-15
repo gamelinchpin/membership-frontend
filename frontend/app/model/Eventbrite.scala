@@ -139,7 +139,6 @@ object Eventbrite {
     val socialImgUrl: String
     val tags: Seq[String]
 
-    val maxDiscounts: Int
     val allowDiscountCodes: Boolean
   }
 
@@ -160,7 +159,6 @@ object Eventbrite {
 
     val tags = Nil
 
-    val maxDiscounts = 2
     val allowDiscountCodes = true
   }
 
@@ -172,7 +170,6 @@ object Eventbrite {
 
     val tags = event.description.map(_.html).flatMap(MasterclassEvent.extractTags).getOrElse(Nil)
 
-    val maxDiscounts = 1
     val allowDiscountCodes = false
   }
 
